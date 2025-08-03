@@ -36,11 +36,18 @@
       border-radius: 8px;
       cursor: pointer;
     }
+    .lang-switch {
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
-  <h1>If You Were Randomly Born...</h1>
-  <button class="btn" onclick="spinRoulette()">Spin the Globe!</button>
+  <h1 id="title">If You Were Randomly Born...</h1>
+  <div class="lang-switch">
+    <button onclick="setLanguage('en')">🇺🇸 English</button>
+    <button onclick="setLanguage('ko')">🇰🇷 한국어</button>
+  </div>
+  <button class="btn" onclick="spinRoulette()" id="spin-btn">Spin the Globe!</button>
 
   <div class="ad-space">Ad Placeholder (Top)</div>
 
@@ -51,17 +58,17 @@
   <script>
     const countries = [
       {
-        name: "India",
-        capital: "New Delhi",
+        name: { en: "India", ko: "인도" },
+        capital: { en: "New Delhi", ko: "뉴델리" },
         population: 1400000000,
         lifeExpectancy: 70.8,
         sexRatio: "108.2 males / 100 females",
         flag: "🇮🇳",
-        weight: 17.8 // % of world population
+        weight: 17.8
       },
       {
-        name: "China",
-        capital: "Beijing",
+        name: { en: "China", ko: "중국" },
+        capital: { en: "Beijing", ko: "베이징" },
         population: 1420000000,
         lifeExpectancy: 78.2,
         sexRatio: "105.1 males / 100 females",
@@ -69,8 +76,8 @@
         weight: 17.5
       },
       {
-        name: "United States",
-        capital: "Washington D.C.",
+        name: { en: "United States", ko: "미국" },
+        capital: { en: "Washington D.C.", ko: "워싱턴 D.C." },
         population: 332000000,
         lifeExpectancy: 77.3,
         sexRatio: "98.4 males / 100 females",
@@ -78,8 +85,8 @@
         weight: 4.2
       },
       {
-        name: "Nigeria",
-        capital: "Abuja",
+        name: { en: "Nigeria", ko: "나이지리아" },
+        capital: { en: "Abuja", ko: "아부자" },
         population: 223000000,
         lifeExpectancy: 61.2,
         sexRatio: "102.3 males / 100 females",
@@ -87,8 +94,8 @@
         weight: 2.6
       },
       {
-        name: "Brazil",
-        capital: "Brasília",
+        name: { en: "Brazil", ko: "브라질" },
+        capital: { en: "Brasília", ko: "브라질리아" },
         population: 216000000,
         lifeExpectancy: 75.9,
         sexRatio: "96.7 males / 100 females",
@@ -96,6 +103,14 @@
         weight: 2.6
       }
     ];
+
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('title').innerText = lang === 'ko' ? '만약 당신이 랜덤한 나라에서 태어났다면...' : 'If You Were Randomly Born...';
+      document.getElementById('spin-btn').innerText = lang === 'ko' ? '룰렛 돌리기!' : 'Spin the Globe!';
+    }
 
     function weightedRandom() {
       const total = countries.reduce((acc, c) => acc + c.weight, 0);
@@ -110,11 +125,11 @@
       const country = weightedRandom();
       const resultDiv = document.getElementById('result');
       resultDiv.innerHTML = `
-        <h2>${country.flag} ${country.name}</h2>
-        <p><strong>Capital:</strong> ${country.capital}</p>
-        <p><strong>Population:</strong> ${country.population.toLocaleString()}</p>
-        <p><strong>Life Expectancy:</strong> ${country.lifeExpectancy} years</p>
-        <p><strong>Sex Ratio:</strong> ${country.sexRatio}</p>
+        <h2>${country.flag} ${country.name[currentLang]}</h2>
+        <p><strong>${currentLang === 'ko' ? '수도' : 'Capital'}:</strong> ${country.capital[currentLang]}</p>
+        <p><strong>${currentLang === 'ko' ? '총인구' : 'Population'}:</strong> ${country.population.toLocaleString()}</p>
+        <p><strong>${currentLang === 'ko' ? '평균 수명' : 'Life Expectancy'}:</strong> ${country.lifeExpectancy} ${currentLang === 'ko' ? '세' : 'years'}</p>
+        <p><strong>${currentLang === 'ko' ? '성비' : 'Sex Ratio'}:</strong> ${country.sexRatio}</p>
       `;
       resultDiv.style.display = 'block';
     }
