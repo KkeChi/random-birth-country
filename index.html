@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>If You Were Born</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+    #result {
+      margin-top: 2rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+    .ad-space {
+      margin: 2rem 0;
+      height: 90px;
+      background: #ddd;
+      text-align: center;
+      line-height: 90px;
+      color: #555;
+    }
+    .btn {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>If You Were Randomly Born...</h1>
+  <button class="btn" onclick="spinRoulette()">Spin the Globe!</button>
+
+  <div class="ad-space">Ad Placeholder (Top)</div>
+
+  <div id="result"></div>
+
+  <div class="ad-space">Ad Placeholder (Bottom)</div>
+
+  <script>
+    const countries = [
+      {
+        name: "India",
+        capital: "New Delhi",
+        population: 1400000000,
+        lifeExpectancy: 70.8,
+        sexRatio: "108.2 males / 100 females",
+        flag: "🇮🇳",
+        weight: 17.8 // % of world population
+      },
+      {
+        name: "China",
+        capital: "Beijing",
+        population: 1420000000,
+        lifeExpectancy: 78.2,
+        sexRatio: "105.1 males / 100 females",
+        flag: "🇨🇳",
+        weight: 17.5
+      },
+      {
+        name: "United States",
+        capital: "Washington D.C.",
+        population: 332000000,
+        lifeExpectancy: 77.3,
+        sexRatio: "98.4 males / 100 females",
+        flag: "🇺🇸",
+        weight: 4.2
+      },
+      {
+        name: "Nigeria",
+        capital: "Abuja",
+        population: 223000000,
+        lifeExpectancy: 61.2,
+        sexRatio: "102.3 males / 100 females",
+        flag: "🇳🇬",
+        weight: 2.6
+      },
+      {
+        name: "Brazil",
+        capital: "Brasília",
+        population: 216000000,
+        lifeExpectancy: 75.9,
+        sexRatio: "96.7 males / 100 females",
+        flag: "🇧🇷",
+        weight: 2.6
+      }
+    ];
+
+    function weightedRandom() {
+      const total = countries.reduce((acc, c) => acc + c.weight, 0);
+      let r = Math.random() * total;
+      for (let c of countries) {
+        if (r < c.weight) return c;
+        r -= c.weight;
+      }
+    }
+
+    function spinRoulette() {
+      const country = weightedRandom();
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <h2>${country.flag} ${country.name}</h2>
+        <p><strong>Capital:</strong> ${country.capital}</p>
+        <p><strong>Population:</strong> ${country.population.toLocaleString()}</p>
+        <p><strong>Life Expectancy:</strong> ${country.lifeExpectancy} years</p>
+        <p><strong>Sex Ratio:</strong> ${country.sexRatio}</p>
+      `;
+      resultDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
